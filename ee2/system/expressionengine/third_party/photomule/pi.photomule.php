@@ -48,7 +48,7 @@ class Photomule
     public function __construct()
     {
     	$this->EE = ee();
-    	
+
     	/* set our params to variables */
     	foreach($this->params as $param => $default)
     	{
@@ -81,7 +81,7 @@ class Photomule
 
     /**
      * To be used for producing and embedding an image for an <img> tag.
-     * This is good for getting the photomule behavior from outside of 
+     * This is good for getting the photomule behavior from outside of
      * the exp:channel:entries looop.
      * @return {string}
      */
@@ -101,7 +101,7 @@ class Photomule
     		return $this->_err("I was asked to get the path info for a null image path. ");
 
     	$this->path_info = pathinfo($this->params['image']);
-    	
+
     	$this->upload_pref = $this->EE->db->like('url', $this->path_info['dirname'], 'after')->get('upload_prefs')->row();
     	if(!is_object($this->upload_pref))
     		return $this->_err("I could not find the upload preferences for the path {$this->path_info['dirname']}.");
@@ -110,7 +110,7 @@ class Photomule
     	$this->imgsize = getimagesize($gis_path);
     	if(!is_array($this->imgsize))
     		return $this->_err("I could not get the image dimensions for the path {$gis_path}.");
-    
+
     	return TRUE;
     }
 
@@ -123,7 +123,7 @@ class Photomule
     {
     	/* just scale according to one dimension */
     	if(
-    		($this->params['height'] && !$this->params['width']) || 
+    		($this->params['height'] && !$this->params['width']) ||
     		($this->params['width'] && !$this->params['height'])
     	)
     	{
@@ -165,7 +165,7 @@ class Photomule
     				$firstkey = 0;
     				$last = 'height';
     				$lastkey = 1;
-    			} 
+    			}
     		}
     		else
     		{
@@ -181,7 +181,7 @@ class Photomule
     				$firstkey = 1;
     				$last = 'width';
     				$lastkey = 0;
-    			} 
+    			}
     		}
     	}
 
@@ -201,13 +201,13 @@ class Photomule
     	$cachedir = $this->upload_pref->server_path.$this->cachedir_name.'/';
 
     	/* build the cached filename */
-    	$cached_filename = 
+    	$cached_filename =
     		preg_replace(
-    			'/[^0-9a-z\-\_\.]/', 
-    			'', 
+    			'/[^0-9a-z\-\_\.]/',
+    			'',
     			strtolower(
     				implode(
-    					'-', 
+    					'-',
     					array(
     						$this->path_info['filename'],
     						'w_'.$this->img_attrs['width'],
@@ -222,7 +222,7 @@ class Photomule
     	/* should we rebuild the cached image? */
     	$rawimg_serverpath = $this->upload_pref->server_path.$this->path_info['basename'];
     	if(
-    		!file_exists($cachedir.$cached_filename) || 
+    		!file_exists($cachedir.$cached_filename) ||
     		(filemtime($cachedir.$cached_filename) < filemtime($rawimg_serverpath))
     	)
     	{
@@ -273,13 +273,13 @@ class Photomule
     	else
     	{
 	    	$img  = '<img ';
-	    	
+
 	    	// src=""
 	    	$img .= ' src="'.$this->img_attrs['src'].'" ';
 
             // alt=""
             $img .= ' alt="" ';
-	    	
+
 	    	// style=""
 	    	$img .= ' style="';
 	    	if($this->img_attrs['height']) $img .= 'height:'.intval($this->img_attrs['height']).'px;';
@@ -300,9 +300,9 @@ class Photomule
 	    	// id=""
 	    	if($this->params['id'])
 	    		$img .= ' id="'.$this->params['id'].'" ';
-	    	
+
 	    	$img .= '>';
-	    	
+
 	    	$this->return_data = $img;
 	    }
 
@@ -356,7 +356,7 @@ class Photomule
     /**
      * @return string
      */
-    public static function usage()
+    public function usage()
     {
         ob_start();
 
